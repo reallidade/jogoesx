@@ -173,7 +173,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      BOTAO JOGAR APERTADO_0: 4230253496801307627
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

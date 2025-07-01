@@ -12,10 +12,11 @@ GameObject:
   - component: {fileID: 6890896134071350138}
   - component: {fileID: 7216718664866136573}
   - component: {fileID: 1999286810216145004}
-  - component: {fileID: 900738728761209245}
+  - component: {fileID: 6197641724763662917}
+  - component: {fileID: 3511356293033018672}
   m_Layer: 0
   m_Name: Projetil
-  m_TagString: Untagged
+  m_TagString: Projetil
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -80,7 +81,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 1, g: 0.7401557, b: 0, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -98,7 +99,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1352043618656014271}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -163,7 +164,21 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &900738728761209245
+--- !u!114 &6197641724763662917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1352043618656014271}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 650f7d24c35c44b4e815f2e32db7b228, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  velocidade: 25
+  tempoDeVida: 3
+--- !u!114 &3511356293033018672
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -175,5 +190,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a643df055f4ab6c41a78c6b8c2ef0e87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 20
+  speed: 25
   tempoDeVida: 2

@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 public class MenuController : MonoBehaviour
 {
     [Header("Configurações de Cena")]
-    public string nomeDaCenaDoJogo = "JOGO"; // Mais fácil de mudar aqui do que no código
+    public string nomeDaCenaDoJogo = "TESTEJOGO"; // Mais fácil de mudar aqui do que no código
 
     [Header("Configurações de Som")]
     public AudioClip somHover; // Som de passar o mouse em cima

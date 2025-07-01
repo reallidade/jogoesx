@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: b38c15383a55ad84dae900034e3e5309
+guid: 3bc2ff4f6abd5c844b75733be9d9eb78
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3415113360840520611
-    second: BOTAO JOGAR PASSANDO O MOUSE POR CIMA_0
+      213: 5062413137370395482
+    second: pomboatirador_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -139,13 +139,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: BOTAO JOGAR PASSANDO O MOUSE POR CIMA_0
+      name: pomboatirador_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 3033
-        height: 813
+        x: 1085
+        y: 228
+        width: 1154
+        height: 1966
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -154,8 +154,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d5c096b0e741b90d0800000000000000
-      internalID: -3415113360840520611
+      spriteID: a53bb373ded414640800000000000000
+      internalID: 5062413137370395482
       vertices: []
       indices: 
       edges: []
@@ -173,8 +173,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      BOTAO JOGAR PASSANDO O MOUSE POR CIMA_0: -3415113360840520611
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

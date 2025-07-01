@@ -1,10 +1,13 @@
 fileFormatVersion: 2
-guid: 0052273b2d7048d4fb9293dabca9faa1
+guid: dbc4564f4d883c34ba8e097ceb3be795
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5410070048098434120
-    second: pomfpoamfpoasnpfnas_0
+      213: -3858081098277550456
+    second: logo_00000_0
+  - first:
+      213: 779673556944007067
+    second: logo_00000_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +49,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -139,13 +142,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: pomfpoamfpoasnpfnas_0
+      name: logo_00000_0
       rect:
         serializedVersion: 2
-        x: 63
-        y: 32
-        width: 264
-        height: 511
+        x: 819
+        y: 142
+        width: 69
+        height: 71
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -154,8 +157,30 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 84c33e28b0e641b40800000000000000
-      internalID: 5410070048098434120
+      spriteID: 886848e9ea7557ac0800000000000000
+      internalID: -3858081098277550456
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: logo_00000_1
+      rect:
+        serializedVersion: 2
+        x: 894
+        y: 134
+        width: 221
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b9fa96a18f4f1da00800000000000000
+      internalID: 779673556944007067
       vertices: []
       indices: 
       edges: []
@@ -164,7 +189,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -174,7 +199,8 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      pomfpoamfpoasnpfnas_0: 5410070048098434120
+      logo_00000_0: -3858081098277550456
+      logo_00000_1: 779673556944007067
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

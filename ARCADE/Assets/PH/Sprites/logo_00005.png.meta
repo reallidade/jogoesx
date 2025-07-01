@@ -1,10 +1,19 @@
 fileFormatVersion: 2
-guid: 0052273b2d7048d4fb9293dabca9faa1
+guid: 6a2b948b66624e248904202e04a60781
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5410070048098434120
-    second: pomfpoamfpoasnpfnas_0
+      213: -4242724561180942514
+    second: logo_00005_0
+  - first:
+      213: -5703794378131222011
+    second: logo_00005_1
+  - first:
+      213: 8623467541035009086
+    second: logo_00005_2
+  - first:
+      213: -5981464276165145314
+    second: logo_00005_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +55,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -139,13 +148,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: pomfpoamfpoasnpfnas_0
+      name: logo_00005_0
       rect:
         serializedVersion: 2
-        x: 63
-        y: 32
-        width: 264
-        height: 511
+        x: 806
+        y: 576
+        width: 120
+        height: 132
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -154,8 +163,74 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 84c33e28b0e641b40800000000000000
-      internalID: 5410070048098434120
+      spriteID: e4f1cf29d70de15c0800000000000000
+      internalID: -4242724561180942514
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: logo_00005_1
+      rect:
+        serializedVersion: 2
+        x: 865
+        y: 544
+        width: 78
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5025e9bab3d08d0b0800000000000000
+      internalID: -5703794378131222011
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: logo_00005_2
+      rect:
+        serializedVersion: 2
+        x: 819
+        y: 142
+        width: 69
+        height: 71
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e34c08b1a06bca770800000000000000
+      internalID: 8623467541035009086
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: logo_00005_3
+      rect:
+        serializedVersion: 2
+        x: 894
+        y: 134
+        width: 221
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e1dcc769ee19dfca0800000000000000
+      internalID: -5981464276165145314
       vertices: []
       indices: 
       edges: []
@@ -164,7 +239,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -174,7 +249,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      pomfpoamfpoasnpfnas_0: 5410070048098434120
+      logo_00005_0: -4242724561180942514
+      logo_00005_1: -5703794378131222011
+      logo_00005_2: 8623467541035009086
+      logo_00005_3: -5981464276165145314
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

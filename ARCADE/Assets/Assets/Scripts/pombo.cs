@@ -1,35 +1,51 @@
 using UnityEngine;
 
+// Adicione esta linha para garantir que o Rigidbody2D sempre exista
+[RequireComponent(typeof(Rigidbody2D))]
 public class pombo : MonoBehaviour
 {
     [Header("Movimento")]
     public float moveSpeed = 10f;
 
     [Header("Tiro")]
-    public GameObject projetilPrefab; // O que vamos atirar (ex: uma pena)
-    public Transform pontoDeTiro;     // De onde o tiro sai
-    public float taxaDeTiro = 0.001f;   // Tiros por segundo (0.2s entre cada tiro)
+    public GameObject projetilPrefab;
+    public Transform pontoDeTiro;
+    public float taxaDeTiro = 0.2f; // Ajustei pra um valor mais razoï¿½vel, 0.001 ï¿½ muito rï¿½pido
 
-    private float proximoTiro = 0f; // Controla o tempo para o próximo tiro
+    private float proximoTiro = 0f;
+    private Rigidbody2D rb; // Variï¿½vel para guardar o Rigidbody
+
+    // Use o Awake para pegar componentes, ï¿½ mais seguro que Start
+    void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
 
     void Update()
     {
-        // --- LÓGICA DE MOVIMENTO ---
-        float moveInput = Input.GetAxis("Horizontal"); // Pega input do teclado (A/D, setas)
-        transform.Translate(Vector2.right * moveInput * moveSpeed * Time.deltaTime);
-
-        // --- LÓGICA DE TIRO CONTÍNUO ---
+        // --- Lï¿½GICA DE TIRO (pode ficar no Update) ---
         if (Time.time > proximoTiro)
         {
-            // Atualiza o tempo para o próximo tiro
             proximoTiro = Time.time + taxaDeTiro;
             Atirar();
         }
     }
 
+    // Use FixedUpdate para tudo que envolve fï¿½sica (movimento, forï¿½as, etc)
+    void FixedUpdate()
+    {
+        // --- Lï¿½GICA DE MOVIMENTO ---
+        float moveInput = Input.GetAxis("Horizontal");
+
+        // Criamos o vetor de velocidade
+        Vector2 novaVelocidade = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
+
+        // Aplicamos a velocidade ao Rigidbody
+        rb.linearVelocity = novaVelocidade;
+    }
+
     void Atirar()
     {
-        // Cria uma instância do nosso projétil no local do pontoDeTiro
         Instantiate(projetilPrefab, pontoDeTiro.position, pontoDeTiro.rotation);
     }
 }

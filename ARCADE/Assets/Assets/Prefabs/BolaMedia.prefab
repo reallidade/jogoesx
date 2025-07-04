@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2949302741492765027}
   - component: {fileID: 7541016799144156761}
   - component: {fileID: 9093596775121661114}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -189,7 +189,7 @@ GameObject:
   - component: {fileID: 8639834189486469767}
   - component: {fileID: 5280149319836594868}
   - component: {fileID: 8655315268326610798}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BolaMedia
   m_TagString: Bola
   m_Icon: {fileID: 0}
@@ -255,9 +255,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 4
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0.08627451, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -345,3 +345,4 @@ MonoBehaviour:
   vida: 10
   bolaMenorPrefab: {fileID: 1841431009422773823, guid: d310656465410134d88b0440b2df1a79, type: 3}
   textoVida: {fileID: 9093596775121661114}
+  forcaImpulsoInicial: 2

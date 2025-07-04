@@ -1,81 +1,130 @@
 using UnityEngine;
 using TMPro;
+using System.Collections;
 
+[RequireComponent(typeof(Rigidbody2D))] // Garante que a bola sempre ter√° um Rigidbody2D
 public class BolaController : MonoBehaviour
 {
-    // --- VARI¡VEIS P⁄BLICAS ---
-    public int vida; // Este È o valor ATUAL da bola, que diminui.
-    public GameObject bolaMenorPrefab;
+    // --- VARI√ÅVEIS P√öBLICAS (Ajust√°veis no Inspector) ---
+    [Header("Atributos da Bola")]
+    public int vida;
+    public GameObject bolaMenorPrefab; // Arraste o prefab da bola menor aqui (se houver)
     public TextMeshPro textoVida;
 
-    // --- VARI¡VEL DE "MEM”RIA" ---
-    private int vidaInicialDestaBola; // <<< AQUI EST¡ A M¡GICA!
+    [Header("Configura√ß√µes de Spawn")]
+    public float forcaImpulsoInicial = 3f; // For√ßa do impulso ao sair do spawner (pode ajustar)
 
+    // --- VARI√ÅVEIS PRIVADAS ---
+    private int vidaInicialDestaBola;
+    private Rigidbody2D rb;
+
+    // Awake √© chamado quando o objeto √© criado. Ideal para pegar componentes.
+    void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
+
+    // Start √© chamado no primeiro frame que o objeto est√° ativo.
     void Start()
     {
-        // Ao ser criada, a bola IMEDIATAMENTE guarda seu valor inicial.
-        // Se ela foi criada com vida = 20, vidaInicialDestaBola ser· 20 para sempre.
+        // Guarda a vida inicial para calcular a vida das bolas menores na divis√£o.
         vidaInicialDestaBola = vida;
+        AtualizarTextoVida();
+    }
 
-        // O resto continua como antes
+    // --- M√âTODO 1: CHAMADO PELO 'BallSpawnerManager' ---
+    // Prepara uma bola que acabou de ser criada nas bordas da tela.
+    public void InicializarParaSpawner(Vector2 direcao)
+    {
+        // 1. Coloca a bola na layer "SpawningBall" para atravessar a parede.
+        gameObject.layer = LayerMask.NameToLayer("SpawningBall");
+
+        // 2. Aplica o impulso para "chutar" a bola para dentro do cen√°rio.
+        rb.AddForce(direcao * forcaImpulsoInicial, ForceMode2D.Impulse);
+
+        // 3. Inicia a rotina que vai reativar as colis√µes normais ap√≥s um tempo.
+        StartCoroutine(AtivarColisoesFinais());
+    }
+
+    // --- M√âTODO 2: CHAMADO QUANDO UMA BOLA MAIOR 'MORRE' E SE DIVIDE ---
+    // Prepara uma bola que nasceu da divis√£o de outra.
+    public void InicializarParaDivisao(int vidaDaBolaNova, Vector2 direcaoDoPulo)
+    {
+        // 1. Define a vida da nova bola.
+        this.vida = vidaDaBolaNova;
+        this.vidaInicialDestaBola = vidaDaBolaNova; // Importante atualizar a vida inicial tamb√©m.
+        AtualizarTextoVida();
+
+        // 2. Aplica um "pulo" controlado para que as bolas se separem.
+        // Usar 'velocity' d√° um controle mais preciso que 'AddForce' para este caso.
+        rb.linearVelocity = direcaoDoPulo;
+    }
+
+    // --- CORROTINA PARA ATIVAR A LAYER FINAL ---
+    // Espera um pouco e depois coloca a bola na sua layer definitiva ("Bolas").
+    IEnumerator AtivarColisoesFinais()
+    {
+        // Espera tempo suficiente para a bola sair de dentro da parede.
+        // 0.5s √© um bom valor inicial para evitar o "teleporte".
+        yield return new WaitForSeconds(1.2f);
+
+        // **A CORRE√á√ÉO PRINCIPAL EST√Å AQUI:**
+        // Muda a layer para "Bolas". Agora ela colidir√° com as paredes,
+        // mas n√£o com outras bolas (conforme a Matriz de Colis√£o).
+        gameObject.layer = LayerMask.NameToLayer("Bolas");
+    }
+
+    // --- L√ìGICA DE DANO E MORTE ---
+    public void LevarDano(int dano)
+    {
+        vida -= dano;
+        if (vida <= 0)
+        {
+            Morrer();
+        }
+        else
+        {
+            AtualizarTextoVida();
+        }
+    }
+
+    private void Morrer()
+    {
+        // S√≥ tenta se dividir se houver um prefab de bola menor definido.
+        if (bolaMenorPrefab != null)
+        {
+            int vidaDasBolasMenores = vidaInicialDestaBola / 2;
+            if (vidaDasBolasMenores < 1) vidaDasBolasMenores = 1;
+
+            // Bola 1 (Esquerda)
+            GameObject bola1_objeto = Instantiate(bolaMenorPrefab, transform.position, Quaternion.identity);
+            bola1_objeto.GetComponent<BolaController>().InicializarParaDivisao(vidaDasBolasMenores, new Vector2(-2f, 3f));
+
+            // Bola 2 (Direita)
+            GameObject bola2_objeto = Instantiate(bolaMenorPrefab, transform.position, Quaternion.identity);
+            bola2_objeto.GetComponent<BolaController>().InicializarParaDivisao(vidaDasBolasMenores, new Vector2(2f, 3f));
+        }
+
+        // Destr√≥i a bola original.
+        Destroy(gameObject);
+    }
+
+    // --- M√âTODOS AUXILIARES ---
+    private void AtualizarTextoVida()
+    {
         if (textoVida != null)
         {
             textoVida.text = vida.ToString();
         }
     }
 
-    public void LevarDano(int dano)
-    {
-        vida -= dano;
-
-        if (vida <= 0)
-        {
-            // Agora n„o precisamos mais passar par‚metros para a funÁ„o Morrer.
-            Morrer();
-        }
-        else
-        {
-            // Se n„o morreu, apenas atualiza o texto.
-            textoVida.text = vida.ToString();
-        }
-    }
-
-    private void Morrer()
-    {
-        if (bolaMenorPrefab != null)
-        {
-            // --- A GRANDE MUDAN«A EST¡ AQUI ---
-            // Usamos o valor que guardamos na memÛria para o c·lculo!
-            // Ex: vidaInicialDestaBola (20) / 2 = 10.
-            int vidaDasBolasMenores = vidaInicialDestaBola / 2;
-
-            // Garante que a vida seja no mÌnimo 1.
-            if (vidaDasBolasMenores < 1)
-            {
-                vidaDasBolasMenores = 1;
-            }
-
-            // A lÛgica de criaÁ„o das bolas continua a mesma...
-            // Bola 1 (Esquerda)
-            GameObject bola1_objeto = Instantiate(bolaMenorPrefab, transform.position, Quaternion.identity);
-            bola1_objeto.GetComponent<BolaController>().vida = vidaDasBolasMenores;
-            bola1_objeto.GetComponent<Rigidbody2D>().AddForce(new Vector2(-2, 5), ForceMode2D.Impulse);
-
-            // Bola 2 (Direita)
-            GameObject bola2_objeto = Instantiate(bolaMenorPrefab, transform.position, Quaternion.identity);
-            bola2_objeto.GetComponent<BolaController>().vida = vidaDasBolasMenores;
-            bola2_objeto.GetComponent<Rigidbody2D>().AddForce(new Vector2(2, 5), ForceMode2D.Impulse);
-        }
-
-        Destroy(gameObject);
-    }
-
-    // Usando OnTriggerEnter2D para n„o ter impacto fÌsico
+    // Detecta a colis√£o com o proj√©til do jogador.
     private void OnTriggerEnter2D(Collider2D other)
     {
+        // Certifique-se que seu proj√©til tem a Tag "Projetil".
         if (other.CompareTag("Projetil"))
         {
-            LevarDano(1);
+            LevarDano(1); // O dano poderia vir do proj√©til no futuro.
         }
     }
 }

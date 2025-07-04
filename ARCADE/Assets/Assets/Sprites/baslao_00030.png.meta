@@ -173,7 +173,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      baslao_00030_0: -7887276383976885624
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

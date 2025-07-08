@@ -1,98 +1,63 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro; // Necessário para controlar o texto da UI (TextMeshPro)
+using TMPro;
+using UnityEngine.SceneManagement;
 
-// Define os possíveis estados do turno
-public enum TurnState { PlayerTurn, EnemyTurn }
+public enum TurnState { PlayerTurn, EnemyTurn, GameOver }
 
 public class GameManager : MonoBehaviour
 {
-    // --- PADRÃO SINGLETON ---
-    // Uma referência estática e pública que permite que qualquer script acesse este
-    // GameManager de forma fácil e segura usando "GameManager.Instance".
     public static GameManager Instance;
 
-    // --- SEÇÃO DE UI ---
     [Header("UI do Jogo")]
-    public TextMeshProUGUI textoScore; // Arraste seu objeto de texto do score aqui pelo Inspector!
+    public TextMeshProUGUI textoScore;
     private int score;
 
-    // --- SEÇÃO DE CONTROLE DE TURNOS ---
+    [Header("Game Over")]
+    public Animator fadeAnimator;
+
     [Header("Controle de Turnos")]
     public TurnState CurrentState { get; private set; }
     public List<EnemyController> enemies;
     private int enemyIndex = 0;
 
-    // --- SEÇÃO DE CONFIGURAÇÃO DE JOGO ---
-    // A criação da bola inicial foi removida daqui, pois agora é responsabilidade
-    // do seu BallSpawnerManager. Mantive as variáveis caso precise delas para outra coisa.
     [Header("Configuração de Jogo")]
     public GameObject bolaInicialPrefab;
     public Transform pontoDeSpawn;
 
-    // O método Awake é chamado antes de qualquer método Start no projeto.
-    // É o local ideal para configurar o Singleton.
     private void Awake()
     {
-        // Lógica do Singleton: garante que exista apenas UMA instância do GameManager.
-        if (Instance == null)
-        {
-            // Se não houver nenhuma instância, esta se torna a instância.
-            Instance = this;
-            // Opcional: Se seu jogo tiver múltiplas cenas, descomente a linha abaixo
-            // para que o GameManager não seja destruído ao carregar uma nova cena.
-            // DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            // Se uma instância já existe, destrói este objeto para evitar duplicatas.
-            Destroy(gameObject);
-        }
+        if (Instance == null) { Instance = this; }
+        else { Destroy(gameObject); }
     }
 
-    // O método Start é chamado no primeiro frame em que o script está ativo.
     void Start()
     {
-        // Inicializa o score do jogador
+        // IMPORTANTE: Garante que o tempo volte ao normal quando a cena do jogo carrega.
+        Time.timeScale = 1f;
+
         score = 0;
         AtualizarTextoDoScore();
-
-        // Inicia o turno do jogador
         StartPlayerTurn();
     }
 
-    // --- MÉTODOS PÚBLICOS PARA GERENCIAR PONTUAÇÃO ---
-    // Qualquer outro script (como o BolaController) chamará este método para dar pontos.
     public void AdicionarPontos(int pontosParaAdicionar)
     {
+        if (CurrentState == TurnState.GameOver) return;
         score += pontosParaAdicionar;
         AtualizarTextoDoScore();
     }
 
-    // Método privado para atualizar o texto na tela.
-    private void AtualizarTextoDoScore()
-    {
-        // Verifica se a referência ao texto não é nula antes de usá-la.
-        if (textoScore != null)
-        {
-            textoScore.text = "SCORE: " + score;
-        }
-        else
-        {
-            // Um aviso útil caso você esqueça de arrastar o texto no Inspector.
-            Debug.LogWarning("GameManager: A referência para o 'textoScore' não foi configurada no Inspector!");
-        }
-    }
-
-    // --- MÉTODOS PARA GERENCIAR TURNOS (Sua lógica original) ---
     public void StartPlayerTurn()
     {
+        if (CurrentState == TurnState.GameOver) return;
         CurrentState = TurnState.PlayerTurn;
     }
 
     public void EndPlayerTurn()
     {
+        if (CurrentState == TurnState.GameOver) return;
         CurrentState = TurnState.EnemyTurn;
         enemyIndex = 0;
         StartCoroutine(ProcessEnemies());
@@ -102,7 +67,7 @@ public class GameManager : MonoBehaviour
     {
         while (enemyIndex < enemies.Count)
         {
-            // Garante que o inimigo ainda existe antes de tentar agir.
+            if (CurrentState == TurnState.GameOver) yield break;
             if (enemies[enemyIndex] != null)
             {
                 enemies[enemyIndex].PerformAction(FindObjectOfType<PlayerController>());
@@ -113,8 +78,38 @@ public class GameManager : MonoBehaviour
         StartPlayerTurn();
     }
 
-    public void EndEnemyTurn()
+    public void EndEnemyTurn() { }
+
+    public void StartGameOver()
     {
-        // A lógica é controlada pela corrotina ProcessEnemies.
+        if (CurrentState == TurnState.GameOver) return;
+        CurrentState = TurnState.GameOver;
+        Debug.Log("GAME OVER INICIADO!");
+
+        // NOVO: CONGELA O JOGO IMEDIATAMENTE!
+        Time.timeScale = 0f;
+
+        if (fadeAnimator != null)
+        {
+            fadeAnimator.gameObject.SetActive(true);
+            fadeAnimator.SetTrigger("StartFade");
+        }
+        else
+        {
+            Debug.LogError("GameManager: O 'fadeAnimator' não foi configurado no Inspector!");
+            SceneManager.LoadScene("GAMEOVER");
+        }
+    }
+
+    private void AtualizarTextoDoScore()
+    {
+        if (textoScore != null)
+        {
+            textoScore.text = "SCORE: " + score;
+        }
+        else
+        {
+            Debug.LogWarning("GameManager: A referência para o 'textoScore' não foi configurada no Inspector!");
+        }
     }
 }

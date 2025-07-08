@@ -48,4 +48,23 @@ public class pombo : MonoBehaviour
     {
         Instantiate(projetilPrefab, pontoDeTiro.position, pontoDeTiro.rotation);
     }
+    // Adicione este método ao seu script pombo.cs
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        // Verifica se o objeto com que colidiu está na layer "Bolas"
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Bolas"))
+        {
+            Debug.Log("Pombo foi atingido! Fim de jogo!");
+
+            // Desativa o movimento do pombo para evitar mais colisões
+            this.enabled = false;
+
+            // Avisa o GameManager para iniciar a sequência de Game Over
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.StartGameOver();
+            }
+        }
+    }
 }

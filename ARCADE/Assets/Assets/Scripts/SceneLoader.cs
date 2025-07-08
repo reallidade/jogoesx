@@ -1,16 +1,11 @@
 using UnityEngine;
+using UnityEngine.SceneManagement; // Essencial para carregar cenas!
 
 public class SceneLoader : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void LoadGameOverScene()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        // Carrega a cena que adicionamos ao Build Settings
+        SceneManager.LoadScene("GAMEOVER");
     }
 }

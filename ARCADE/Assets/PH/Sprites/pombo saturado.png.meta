@@ -173,7 +173,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      pombo saturado_0: 3473389550469528645
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

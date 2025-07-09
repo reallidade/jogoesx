@@ -4,37 +4,47 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 
+// Define os possíveis estados do turno, incluindo GameOver.
 public enum TurnState { PlayerTurn, EnemyTurn, GameOver }
 
 public class GameManager : MonoBehaviour
 {
+    // --- PADRÃO SINGLETON ---
     public static GameManager Instance;
 
+    // --- SEÇÃO DE UI ---
     [Header("UI do Jogo")]
     public TextMeshProUGUI textoScore;
     private int score;
 
-    [Header("Game Over")]
-    public Animator fadeAnimator;
-
+    // --- SEÇÃO DE CONTROLE DE TURNOS ---
     [Header("Controle de Turnos")]
     public TurnState CurrentState { get; private set; }
     public List<EnemyController> enemies;
     private int enemyIndex = 0;
 
+    // --- SEÇÃO DE CONFIGURAÇÃO DE JOGO (Mantida para referência) ---
     [Header("Configuração de Jogo")]
     public GameObject bolaInicialPrefab;
     public Transform pontoDeSpawn;
 
+    // O método Awake configura o Singleton.
     private void Awake()
     {
-        if (Instance == null) { Instance = this; }
-        else { Destroy(gameObject); }
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
+    // O método Start inicializa o estado do jogo.
     void Start()
     {
-        // IMPORTANTE: Garante que o tempo volte ao normal quando a cena do jogo carrega.
+        // Garante que o tempo volte ao normal quando a cena do jogo carrega ou reinicia.
         Time.timeScale = 1f;
 
         score = 0;
@@ -42,6 +52,7 @@ public class GameManager : MonoBehaviour
         StartPlayerTurn();
     }
 
+    // --- MÉTODOS PÚBLICOS PARA GERENCIAR PONTUAÇÃO ---
     public void AdicionarPontos(int pontosParaAdicionar)
     {
         if (CurrentState == TurnState.GameOver) return;
@@ -49,6 +60,7 @@ public class GameManager : MonoBehaviour
         AtualizarTextoDoScore();
     }
 
+    // --- MÉTODOS PARA GERENCIAR TURNOS ---
     public void StartPlayerTurn()
     {
         if (CurrentState == TurnState.GameOver) return;
@@ -80,27 +92,33 @@ public class GameManager : MonoBehaviour
 
     public void EndEnemyTurn() { }
 
+    // --- MÉTODO ATUALIZADO PARA INICIAR A SEQUÊNCIA DE GAME OVER ---
     public void StartGameOver()
     {
+        // Se o jogo já acabou, não faz nada para evitar chamadas múltiplas.
         if (CurrentState == TurnState.GameOver) return;
+
         CurrentState = TurnState.GameOver;
         Debug.Log("GAME OVER INICIADO!");
 
-        // NOVO: CONGELA O JOGO IMEDIATAMENTE!
+        // 1. Congela o tempo do jogo.
         Time.timeScale = 0f;
 
-        if (fadeAnimator != null)
+        // 2. Chama o FadeManager para cuidar da transição de cena de forma suave.
+        //    Certifique-se de que a cena "GAMEOVER 1" está adicionada ao Build Settings.
+        if (FadeManager.Instance != null)
         {
-            fadeAnimator.gameObject.SetActive(true);
-            fadeAnimator.SetTrigger("StartFade");
+            FadeManager.Instance.FadeParaCena("GAMEOVER 1");
         }
         else
         {
-            Debug.LogError("GameManager: O 'fadeAnimator' não foi configurado no Inspector!");
-            SceneManager.LoadScene("GAMEOVER");
+            // Plano B: Se o FadeManager não for encontrado, carrega a cena diretamente.
+            Debug.LogError("FadeManager não encontrado! Carregando a cena de GameOver diretamente.");
+            SceneManager.LoadScene("GAMEOVER 1");
         }
     }
 
+    // --- MÉTODO AUXILIAR ---
     private void AtualizarTextoDoScore()
     {
         if (textoScore != null)

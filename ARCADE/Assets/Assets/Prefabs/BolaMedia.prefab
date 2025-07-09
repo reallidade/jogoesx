@@ -35,7 +35,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 2.9511, y: 0.988}
+  m_SizeDelta: {x: 17.69, y: 5.923}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &7541016799144156761
 MeshRenderer:
@@ -129,8 +129,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 8
-  m_fontSizeBase: 8
+  m_fontSize: 50
+  m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -205,8 +205,8 @@ Transform:
   m_GameObject: {fileID: 1841431009422773823}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.888, y: 3.9406, z: 0}
-  m_LocalScale: {x: 0.5721928, y: 0.5721928, z: 0.54960626}
+  m_LocalPosition: {x: -1.7954, y: 5.0132, z: 0}
+  m_LocalScale: {x: 0.10000561, y: 0.10000561, z: 0.09605802}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2949302741492765027}
@@ -256,7 +256,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 4
-  m_Sprite: {fileID: -5305047213253927348, guid: ab2b9ba51b7520f4aa2695038562adde, type: 3}
+  m_Sprite: {fileID: 2465316171447306881, guid: 58ac4e6950ddb0d41b09fc0d71067e15, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -301,8 +301,8 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.092282385, y: 0.1476545}
-  m_Radius: 2.0688305
+  m_Offset: {x: -0.16799223, y: 0.14765507}
+  m_Radius: 11.07857
 --- !u!50 &5280149319836594868
 Rigidbody2D:
   serializedVersion: 5
@@ -346,4 +346,5 @@ MonoBehaviour:
   bonusDeDestruicao: 10
   bolaMenorPrefab: {fileID: 1841431009422773823, guid: d310656465410134d88b0440b2df1a79, type: 3}
   textoVida: {fileID: 9093596775121661114}
+  efeitoDeMortePrefab: {fileID: 0}
   forcaImpulsoInicial: 2

@@ -2,58 +2,38 @@ using UnityEngine;
 using TMPro;
 using System.Collections;
 
-[RequireComponent(typeof(Rigidbody2D))] // Garante que a bola sempre terá um Rigidbody2D
+[RequireComponent(typeof(Rigidbody2D))]
 public class BolaController : MonoBehaviour
 {
-    // --- VARIÁVEIS PÚBLICAS (Ajustáveis no Inspector de cada prefab) ---
+    // A vida de cada bola agora será lida diretamente do valor que você definir
+    // no Inspector do seu respectivo prefab (Bola, BolaMedia, BolaPequena).
     [Header("Atributos da Bola")]
     public int vida;
     public int bonusDeDestruicao = 5;
     public GameObject bolaMenorPrefab;
     public TextMeshPro textoVida;
 
+    [Header("Efeitos")]
+    public GameObject efeitoDeMortePrefab;
+
     [Header("Configurações de Spawn")]
     public float forcaImpulsoInicial = 3f;
 
-    // --- VARIÁVEIS PRIVADAS ---
-    private int vidaInicialDestaBola; // Usado apenas para referência interna se necessário
     private Rigidbody2D rb;
+    private int vidaInicialDestaBola; // Usado apenas para o bônus de destruição.
 
+    // Awake é chamado quando o objeto é criado. Ideal para pegar componentes.
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
     }
 
+    // Start é chamado no primeiro frame que o objeto está ativo.
     void Start()
     {
-        // A vida inicial é simplesmente o valor 'vida' definido no prefab.
+        // A vida inicial desta bola é o valor que está no seu próprio Inspector.
         vidaInicialDestaBola = vida;
         AtualizarTextoVida();
-    }
-
-    // --- MÉTODO 1: CHAMADO PELO 'BallSpawnerManager' ---
-    public void InicializarParaSpawner(Vector2 direcao)
-    {
-        gameObject.layer = LayerMask.NameToLayer("SpawningBall");
-        rb.AddForce(direcao * forcaImpulsoInicial, ForceMode2D.Impulse);
-        StartCoroutine(AtivarColisoesFinais());
-    }
-
-    // --- MÉTODO 2: CHAMADO QUANDO UMA BOLA MAIOR 'MORRE' E SE DIVIDE ---
-    // **MUDANÇA AQUI:** Não precisamos mais receber a vida da bola nova.
-    public void InicializarParaDivisao(Vector2 direcaoDoPulo)
-    {
-        // A vida da bola já está correta, pois foi definida no prefab.
-        // O método Start() já cuidou de atualizar o texto.
-        // A única coisa que precisamos fazer é aplicar o pulo.
-        rb.linearVelocity = direcaoDoPulo;
-    }
-
-    // --- CORROTINA PARA ATIVAR A LAYER FINAL ---
-    IEnumerator AtivarColisoesFinais()
-    {
-        yield return new WaitForSeconds(0.5f);
-        gameObject.layer = LayerMask.NameToLayer("Bolas");
     }
 
     // --- LÓGICA DE DANO E MORTE ---
@@ -75,20 +55,24 @@ public class BolaController : MonoBehaviour
         }
     }
 
+    // --- MÉTODO 'MORRER' ATUALIZADO ---
     private void Morrer()
     {
+        // 1. Dar pontos ao jogador.
         if (GameManager.Instance != null)
         {
             GameManager.Instance.AdicionarPontos(bonusDeDestruicao);
         }
 
+        // 2. Tentar dividir a bola.
         if (bolaMenorPrefab != null)
         {
-            // **MUDANÇA AQUI:** Removemos o cálculo da vida.
+            // Não calculamos mais a vida aqui. A nova bola instanciada a partir
+            // do 'bolaMenorPrefab' já terá a vida que você definiu no Inspector dela.
 
             // Bola 1 (Esquerda)
             GameObject bola1_objeto = Instantiate(bolaMenorPrefab, transform.position, Quaternion.identity);
-            // Agora chamamos o método sem passar a vida.
+            // Apenas inicializamos com o pulo. A vida já está correta no prefab.
             bola1_objeto.GetComponent<BolaController>().InicializarParaDivisao(new Vector2(-2f, 3f));
 
             // Bola 2 (Direita)
@@ -96,10 +80,41 @@ public class BolaController : MonoBehaviour
             bola2_objeto.GetComponent<BolaController>().InicializarParaDivisao(new Vector2(2f, 3f));
         }
 
+        // 3. Criar o efeito de partícula.
+        if (efeitoDeMortePrefab != null)
+        {
+            Instantiate(efeitoDeMortePrefab, transform.position, Quaternion.identity);
+        }
+
+        // 4. Por fim, destruir a bola original.
         Destroy(gameObject);
     }
 
-    // --- MÉTODOS AUXILIARES ---
+    // --- MÉTODO 'InicializarParaDivisao' ATUALIZADO ---
+    // Agora, este método cuida apenas do movimento inicial da bola dividida.
+    public void InicializarParaDivisao(Vector2 direcaoDoPulo)
+    {
+        // A vida não é mais definida aqui. O método Start() da nova bola cuidará
+        // de ler o valor de vida do seu próprio Inspector.
+        rb.linearVelocity = direcaoDoPulo;
+    }
+
+
+    #region Métodos Inalterados
+    // Os métodos abaixo não foram alterados e estão corretos.
+    public void InicializarParaSpawner(Vector2 direcao)
+    {
+        gameObject.layer = LayerMask.NameToLayer("SpawningBall");
+        rb.AddForce(direcao * forcaImpulsoInicial, ForceMode2D.Impulse);
+        StartCoroutine(AtivarColisoesFinais());
+    }
+
+    IEnumerator AtivarColisoesFinais()
+    {
+        yield return new WaitForSeconds(0.5f);
+        gameObject.layer = LayerMask.NameToLayer("Bolas");
+    }
+
     private void AtualizarTextoVida()
     {
         if (textoVida != null)
@@ -116,4 +131,5 @@ public class BolaController : MonoBehaviour
             Destroy(other.gameObject);
         }
     }
+    #endregion
 }

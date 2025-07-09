@@ -13,7 +13,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Obstaculos
   - Bolas
   - Paredes
   - SpawningBall
@@ -42,6 +42,9 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Efeitos
+    uniqueID: 2391017775
     locked: 0
   m_RenderingLayers:
   - Default

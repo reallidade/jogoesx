@@ -82,7 +82,7 @@ public class GameManager : MonoBehaviour
             if (CurrentState == TurnState.GameOver) yield break;
             if (enemies[enemyIndex] != null)
             {
-                enemies[enemyIndex].PerformAction(FindAnyObjectByType<PlayerController>());
+                enemies[enemyIndex].PerformAction(FindObjectOfType<PlayerController>());
             }
             enemyIndex++;
             yield return new WaitForSeconds(0.5f);
@@ -93,35 +93,28 @@ public class GameManager : MonoBehaviour
     public void EndEnemyTurn() { }
 
     // --- MÉTODO ATUALIZADO PARA INICIAR A SEQUÊNCIA DE GAME OVER ---
-    // --- MÉTODO ATUALIZADO PARA INICIAR A SEQUÊNCIA DE GAME OVER ---
     public void StartGameOver()
     {
         // Se o jogo já acabou, não faz nada para evitar chamadas múltiplas.
         if (CurrentState == TurnState.GameOver) return;
 
         CurrentState = TurnState.GameOver;
-        Debug.Log("GAME OVER INICIADO! Pontuação final: " + score);
-
-        // --- MUDANÇA PRINCIPAL AQUI ---
-        // Em vez de usar uma classe estática, salvamos a pontuação diretamente
-        // nos PlayerPrefs com uma chave temporária.
-        PlayerPrefs.SetInt("TempFinalScore", score);
-        PlayerPrefs.Save(); // Força a gravação dos dados no disco imediatamente.
-                            // ---------------------------------
+        Debug.Log("GAME OVER INICIADO!");
 
         // 1. Congela o tempo do jogo.
         Time.timeScale = 0f;
 
         // 2. Chama o FadeManager para cuidar da transição de cena de forma suave.
+        //    Certifique-se de que a cena "GAMEOVER 1" está adicionada ao Build Settings.
         if (FadeManager.Instance != null)
         {
-            FadeManager.Instance.FadeParaCena("GAMEOVER");
+            FadeManager.Instance.FadeParaCena("GAMEOVER 1");
         }
         else
         {
             // Plano B: Se o FadeManager não for encontrado, carrega a cena diretamente.
             Debug.LogError("FadeManager não encontrado! Carregando a cena de GameOver diretamente.");
-            SceneManager.LoadScene("GAMEOVER");
+            SceneManager.LoadScene("GAMEOVER 1");
         }
     }
 

@@ -1,74 +1,64 @@
+// ---- INÍCIO DO CÓDIGO CORRETO ----
+
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
+using UnityEngine.UI; // ESSA LINHA É CRUCIAL para o tipo "Button" funcionar!
+using TMPro;          // Essa linha é para TMP_Text e TMP_InputField
 using UnityEngine.SceneManagement;
 
 public class GameOverUI : MonoBehaviour
 {
-    [Header("Referências da UI")]
+    // --- REFERÊNCIAS DA UI ---
+    // O Unity vai criar um campo no Inspector para cada uma dessas variáveis públicas.
     public TMP_Text scoreText;
     public TMP_InputField nameInputField;
     public Button saveButton;
 
     private int finalScore;
 
-    // Chave para a pontuação temporária. Usar uma constante evita erros de digitação.
-    private const string TempScoreKey = "TempFinalScore";
+    // Classe estática para passar a pontuação entre as cenas
+    public static class GameSession
+    {
+        public static int score;
+    }
 
     void Start()
     {
-        // --- MUDANÇA PRINCIPAL AQUI ---
-        // 1. Pega a pontuação dos PlayerPrefs. O segundo parâmetro (0) é o valor
-        //    padrão caso a chave não seja encontrada.
-        finalScore = PlayerPrefs.GetInt(TempScoreKey, 0);
-        // ---------------------------------
-
+        // Pega a pontuação da sessão de jogo e mostra na tela
+        finalScore = GameSession.score;
         scoreText.text = "SUA PONTUAÇÃO: " + finalScore.ToString();
 
-        // (BOA PRÁTICA) Limpa a chave temporária para não ser usada por engano depois.
-        PlayerPrefs.DeleteKey(TempScoreKey);
-
-        // Garante que o cursor do mouse esteja visível e desbloqueado.
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
-
+        // IMPORTANTE: Garante que o botão não está nulo antes de adicionar o listener
         if (saveButton != null)
         {
+            // Adiciona um listener para o botão chamar a função quando for clicado
             saveButton.onClick.AddListener(SaveScoreAndReturnToMenu);
         }
         else
         {
-            Debug.LogError("O 'Save Button' não foi atribuído no Inspector do GameOverUI!");
-        }
-
-        // Foca no campo de texto para o jogador poder digitar o nome imediatamente.
-        if (nameInputField != null)
-        {
-            nameInputField.Select();
-            nameInputField.ActivateInputField();
+            Debug.LogError("O 'Save Button' não foi atribuído no Inspector!");
         }
     }
 
     public void SaveScoreAndReturnToMenu()
     {
+        // Pega o nome digitado pelo jogador
         string playerName = nameInputField.text;
 
+        // Se o nome estiver em branco, usa um nome padrão
         if (string.IsNullOrEmpty(playerName))
         {
             playerName = "JOGADOR";
         }
 
-        // A lógica de salvar no RankingManager continua a mesma.
-        // Ele vai pegar a pontuação e adicionar à sua lista permanente.
+        // Adiciona a pontuação usando o RankingManager (verifique se você tem esse script no projeto)
         if (RankingManager.Instance != null)
         {
             RankingManager.Instance.AddScore(playerName.ToUpper(), finalScore);
         }
-        else
-        {
-            Debug.LogError("RankingManager.Instance não encontrado! A pontuação não foi salva.");
-        }
 
-        SceneManager.LoadScene("MENU"); // Certifique-se que o nome da cena está correto.
+        // Carrega a cena do menu principal
+        SceneManager.LoadScene("MENU");
     }
 }
+
+// ---- FIM DO CÓDIGO CORRETO ----

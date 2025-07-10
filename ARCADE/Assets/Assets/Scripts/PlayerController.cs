@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour {
     private GameManager gm;
 
     void Start() {
-        gm = FindAnyObjectByType<GameManager>();
+        gm = FindObjectOfType<GameManager>();
     }
 
     void Update() {

@@ -7,7 +7,7 @@ public class UIManager : MonoBehaviour {
     private PlayerController player;
 
     void Start() {
-        player = FindAnyObjectByType<PlayerController>();
+        player = FindObjectOfType<PlayerController>();
     }
 
     void Update() {

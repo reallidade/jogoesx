@@ -15,6 +15,6 @@ public class EnemyController : MonoBehaviour {
 
     public void PerformAction(PlayerController player) {
         player.health--;
-        FindAnyObjectByType<GameManager>().EndEnemyTurn();
+        FindObjectOfType<GameManager>().EndEnemyTurn();
     }
 }
